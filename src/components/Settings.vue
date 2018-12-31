@@ -116,7 +116,8 @@ input:checked + .slider:before {
   display: flex;
   flex-direction: column;
   color: black;
-  font-weight: 300;
+  padding: 10px;
+  font-weight: 600;
   justify-content: flex-start;
   align-items: center;
 }
