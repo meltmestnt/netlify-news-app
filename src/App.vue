@@ -1,12 +1,12 @@
 <template>
-  <div id="app">
+  <div id="app" :class="{app__dark: darken}" @click.stop="closeSettings($event)">
     <progress-bar/>
     <Menu></Menu>
     <transition
       name="fade"
       mode="out-in"
     >
-      <router-view></router-view>
+      <router-view :class="{main__content__dark: darken}"></router-view>
     </transition>
   </div>
 </template>
@@ -16,36 +16,55 @@ import Menu from "./components/Menu.vue";
 import ProgressBar from "./components/ProgressBar.vue"
 export default {
   name: "app",
+  inheritAttrs: false,
   components: {
     Menu,
     ProgressBar
+  },
+  computed: {
+    darken() {
+      return this.$store.getters.checkDark;
+    }
+  },
+  methods: {
+    closeSettings(e) {
+      eventBus.$emit('closeSettings', e);
+    }
   }
 };
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css?family=Oswald|Playfair+Display|Thasadith");
+@import url("https://fonts.googleapis.com/css?family=Oswald|Playfair+Display|Thasadith|Roboto");
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
-* {
-    font-family: "Thasadith", sans-serif;
-    color: black;
-}
+
 #app {
   background-color: rgba(95, 111, 129, 0.1);
       overflow-x: hidden;
+}
+.app__dark {
+  background-color: #212121 !important;
 }
 .main__content {
   width: 75%;
   height: 100%;
   margin: 0 auto;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
   background-color: white;
+  color: black;
 }
+.main__content__dark {
+  background-color: #212121 !important;
+  color: white !important;
+}
+
 .main__container {
     width: 100vw;
     margin: 0 auto;
@@ -55,8 +74,11 @@ export default {
     min-height: 100vh;
     padding-bottom: 50px;
 }
-.fade-enter-active, .fade-leave-active {
-  transition: all 0.2s;
+.fade-leave-active {
+  transition: all .2s;
+}
+.fade-enter-active {
+  transition: all 1s;
 }
 .fade-leave, .fade-enter-to {
   opacity: 1;
