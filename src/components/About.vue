@@ -1,6 +1,6 @@
 <template>
   <div class="main__container">
-    <div class="main__content">
+    <div class="main__content" :class="{main__content__dark: darken}">
       <div class="info">
         <p>
           This is just an example of using Vue.js, vue-router, axios, and news API.
@@ -30,6 +30,11 @@ export default {
   },
   mounted() {
     eventBus.$emit("progressStop");
+  },
+  computed: {
+    darken() {
+      return this.$store.getters.checkDark;
+    }
   }
 };
 </script>
@@ -44,5 +49,9 @@ export default {
 }
 a {
   text-decoration: none;
+}
+.main__content__dark {
+  background-color: #212121 !important;
+  color: white !important;
 }
 </style>

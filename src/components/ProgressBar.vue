@@ -38,7 +38,7 @@ export default {
         this.set();
       });
       eventBus.$on("progressStart", () => {
-          this.start();
+          this.increment();
       })
     },
     increment() {
@@ -54,6 +54,7 @@ export default {
       clearInterval(this.interval);
     },
     set() {
+      
       this.incrementing = 100;
       setTimeout(() => this.stop(), 400);
     }

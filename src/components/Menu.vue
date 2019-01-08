@@ -1,45 +1,48 @@
 
 <template>
-  <div class="menu__container">
+  <div
+    class="menu__container"
+    :class="{dark: darken}"
+  >
     <div class="menu">
       <ul>
         <li
           v-for="link in links"
           :id="link.title"
           :key="link.title"
-          @click="circleShow($event, link)"
+          @click="circleShow($event)"
         >
-          <div
-            class="circle"
-            v-show="link.show"
-            :style="styleObj"
-          ></div>
+          <Circlee
+            :darken="darken"
+            :delay="15"
+          />
           <router-link
-            :class="{active: link.active}"
+            :class="{active: link.active, active__dark: darken && link.active}"
             :to="{name:link.title}"
           >{{link.title}}</router-link>
         </li>
       </ul>
     </div>
-    <div class="settings__button">
+    <div
+      class="settings__button"
+      :class="{settings__button__dark: darken}"
+    >
       <Settings />
     </div>
   </div>
 </template>
 
 <script>
-import Settings from './Settings.vue'
+import Settings from "./Settings.vue";
+import Circlee from "./Circlee.vue";
 export default {
   name: "Menu",
   components: {
-    Settings
+    Settings,
+    Circlee
   },
   data() {
     return {
-      incrementing: 1,
-      remove: null,
-      left: 0,
-      top: 0,
       links: [
         {
           title: "home",
@@ -73,33 +76,21 @@ export default {
     });
   },
   methods: {
-    circleShow(ev, link) {
-      this.left = ev.clientX - ev.target.getBoundingClientRect().left;
-      this.top = ev.clientY;
-      link.show = true;
-      this.remove = setInterval(() => {
-        if (this.incrementing >= 15) {
-          clearInterval(this.remove);
-          this.incrementing = 0;
-          link.show = false;
-          this.opacity = 0.2;
-        }
-        this.incrementing += 1;
-        this.opacity -= 0.007;
-      }, 10);
+    circleShow(e) {
+      eventBus.$emit("circleshow", e, e.currentTarget);
     }
   },
   computed: {
     styleObj() {
       return {
-        transform: `scale(${this.incrementing}, ${this.incrementing})`, 
+        transform: `scale(${this.incrementing}, ${this.incrementing})`,
         left: `${this.left}px`,
         top: `${this.top}px`,
-        opacity: 0.2
-      }
+        opacity: 0.4
+      };
     },
     darken() {
-      return this.$store.checkDark;
+      return this.$store.getters.checkDark;
     }
   }
 };
@@ -114,9 +105,18 @@ export default {
   padding: 0;
   text-align: center;
 }
+.dark {
+  background: #1b1b1b !important;
+}
 .active {
   color: white !important;
   background-color: #f60;
+}
+.active__dark {
+  background-color: #007aff !important;
+}
+.circle__dark {
+  background-color: #007aff !important;
 }
 .menu__container {
   position: fixed;
@@ -130,7 +130,7 @@ export default {
   align-items: center;
   justify-content: flex-end;
   z-index: 999;
-    background: white;
+  background: white;
 }
 .menu {
   width: 100%;
@@ -176,5 +176,6 @@ export default {
   letter-spacing: 2px;
   position: relative;
   z-index: 999;
+  transition: 0.2s;
 }
 </style>
