@@ -8,56 +8,60 @@
       Settings
       <font-awesome-icon icon="cog" />
     </div>
-    <div
-      class="settings"
-      v-show="show"
-      :class="{settings__dark: checkDark}"
-    >
-      <div class="slider__container">
-        <p>Enable dark theme</p>
-        <label class="switch">
-          <input
-            type="checkbox"
-            @change="darken()"
-          >
-          <span class="slider round"></span>
-        </label>
-      </div>
-      <div class="country__container">
-        <div
-          @click="openSelect(), showCircle($event)"
-          class="select"
-          :class="{select__dark: checkDark}"
-        >
-          <Circlee :darken="checkDark" />
-          {{$store.getters.getCountry.toUpperCase()}}
-          <span :class="[selected ? 'selected' : 'not__selected']"></span>
-        </div>
-        <transition name="fade">
-          <ul
-            class="options"
-            v-if="selected"
-            :class="{options__dark: checkDark}"
-          >
-            <li
-              class="option"
-              @click="changeCountry(country), closeSelect()"
-              v-for="country in lang"
-              :key="country.country"
-              :class="{active: country.active}"
-            >
-              {{country.country}}
-            </li>
-          </ul>
-        </transition>
+    <transition name="fade__top">
 
+      <div
+        class="settings"
+        v-show="show"
+        :class="{settings__dark: checkDark}"
+      >
+        <div class="slider__container">
+          <p>Enable dark theme</p>
+          <label class="switch">
+            <input
+              type="checkbox"
+              @change="darken()"
+            >
+            <span class="slider round"></span>
+          </label>
+        </div>
+        <div class="country__container">
+          <div
+            @click="openSelect(), showCircle($event)"
+            class="select"
+            :class="{select__dark: checkDark}"
+          >
+            <Circlee :darken="checkDark" />
+            {{$store.getters.getCountry.toUpperCase()}}
+            <span :class="[selected ? 'selected' : 'not__selected']"></span>
+          </div>
+          <transition name="fade">
+            <ul
+              class="options"
+              v-if="selected"
+              :class="{options__dark: checkDark}"
+            >
+              <li
+                class="option"
+                @click="changeCountry(country), closeSelect()"
+                v-for="country in lang"
+                :key="country.country"
+                :class="{active: country.active}"
+              >
+                {{country.country}}
+              </li>
+            </ul>
+          </transition>
+
+        </div>
       </div>
-    </div>
+
+    </transition>
   </div>
 </template>
 
 <script>
-import Circlee from "./Circlee.vue"
+import Circlee from "./Circlee.vue";
 export default {
   name: "Settings",
   components: {
@@ -69,21 +73,21 @@ export default {
       selected: false,
       lang: [
         {
-          country: 'RU',
-          active: false,
+          country: "RU",
+          active: false
         },
         {
-          country: 'US',
-          active: true,
+          country: "US",
+          active: true
         },
         {
-          country: 'PL',
-          active: false,
+          country: "PL",
+          active: false
         },
         {
-          country: 'UA',
-          active: false,
-        },
+          country: "UA",
+          active: false
+        }
       ]
     };
   },
@@ -101,7 +105,7 @@ export default {
       this.selected = false;
     },
     showCircle(e) {
-      eventBus.$emit('circleshow', e, e.currentTarget)
+      eventBus.$emit("circleshow", e, e.currentTarget);
     },
     changeCountry(country) {
       for (let i of this.lang) {
@@ -140,16 +144,32 @@ export default {
   font-family: "Roboto", sans-serif;
   font-weight: 300;
 }
-.fade-enter-active, .fade-leave-active {
-  transition: 0.3s all;
+.fade-enter-active,
+.fade-leave-active {
+  transition: 0.35s all;
 }
-.fade-enter, .fade-leave-to {
-  transform: scale(0,0);
+.fade-enter,
+.fade-leave-to {
+  transform: scale(0, 0);
 }
-.fade-leave, .fade-enter-to {
-  transform: scale(1,1);
+.fade-leave,
+.fade-enter-to {
+  transform: scale(1, 1);
 }
-
+.fade__top-enter-active,
+.fade__top-leave-active {
+  transition: 0.35s all;
+}
+.fade__top-enter,
+.fade__top-leave-to {
+  transform: translateY(-25px);
+  opacity: 0;
+}
+.fade__top-enter-to
+.fade__top-leave {
+  transform: translateY(0);
+  opacity: 1;
+}
 .active {
   color: #009ffd !important;
 }
@@ -217,7 +237,7 @@ input:checked + .slider:before {
   justify-content: center;
   align-items: center;
   position: relative;
-  margin-right: 50px;
+  margin-right: 25%;
 }
 .setting__button {
   color: black !important;
@@ -241,14 +261,14 @@ input:checked + .slider:before {
 }
 .settings {
   position: absolute;
-  z-index: 99;
+  z-index: 99999;
   top: 150%;
   right: 0;
   width: 250px;
   height: 250px;
   background-color: white;
-  box-shadow: 0px 4px 25px -5px rgba(0, 0, 0, 0.75);
-  border-radius: 2px;
+  box-shadow: 0px 4px 30px -12px rgba(0, 0, 0, 0.75);
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   padding: 10px;
@@ -274,7 +294,6 @@ input:checked + .slider:before {
   margin-right: 10px;
 }
 .country__container {
-
   display: flex;
   width: 100%;
   flex-direction: row;
@@ -340,7 +359,7 @@ input:checked + .slider:before {
 .options {
   width: 75%;
   background-color: white;
-  box-shadow: 0px 2px 30px -10px rgba(0,0,0,0.75);
+  box-shadow: 0px 2px 30px -10px rgba(0, 0, 0, 0.75);
   position: absolute;
   z-index: 99999;
   border-radius: 3px;
@@ -357,9 +376,9 @@ input:checked + .slider:before {
   transition: 0.2s;
 }
 .options li:hover {
-  background-color: rgba(244,244,244,1);
+  background-color: rgba(244, 244, 244, 1);
 }
 .options__dark li:hover {
-  background-color: rgba(244,244,244,.1) !important;
+  background-color: rgba(244, 244, 244, 0.1) !important;
 }
 </style>

@@ -35,7 +35,6 @@ export default {
       opacity: 0.4
     };
   },
-
   created() {
     eventBus.$on("circleshow", (ev, target) => {
       let circle = target.querySelector(".circle"),

@@ -6,13 +6,18 @@
     >
       <div class="search__form">
         <p>Enter keywords to search for news:</p>
-        <input
+        <div class="search">
+          <input
           placeholder="keywords..."
           type="text"
           :class="{search__form__dark: darken}"
           @keypress.enter="getData(keyword)"
           v-model="keyword"
         >
+        <div class="search__button" @click="getData(keyword)" :class="{search__button__dark: darken}">
+          <font-awesome-icon icon="search" />
+        </div>
+        </div>
       </div>
       <Results
         :articles="articles"
@@ -90,20 +95,45 @@ export default {
   align-items: center;
   margin-top: 10px;
 }
-
+.search {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  margin: 0 auto;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.search__button {
+  border: 1px solid rgba(211, 211, 211, 0.6);
+  padding: 10px 25px 10px 25px;
+  cursor: pointer;
+  color: lightgrey;
+  transition: 0.2s;
+}
+.search__button:hover {
+  background-color: rgba(211, 211, 211, 0.1);
+}
+.search__button__dark {
+  border: 1px solid rgba(40, 40, 40, 1) !important;
+  color: white;
+  background-color: rgba(19, 19, 19, 1) !important;
+}
 .search__form input {
-  margin-top: 10px;
   outline: none;
   width: 50%;
   padding: 10px;
-  border: 1px solid lightgray;
-  margin: 20px;
+  border: 1px solid rgba(211, 211, 211, 0.6);
+  border-right: none;
 }
 
 .search__form__dark {
   background-color: rgba(19, 19, 19, 1) !important;
   color: white !important;
   border: 1px solid rgba(40, 40, 40, 1) !important;
+   border-right: none !important;
 }
 
 .main__content__dark {
